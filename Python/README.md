@@ -1,5 +1,5 @@
 # Lecture directories
-Directories containing leture content for the Python series
+Directories containing leture content for the Python series.
 
 Please refer to the lecture title when looking for the relevant directory.
 
