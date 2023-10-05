@@ -1,0 +1,14 @@
+<menu>
+    <meal type="Breakfast">
+        <name>Belgian Waffles</name>
+        <total>20.00</total>
+        <description>Two of our famous Belgian Waffles with plenty
+         of syrup on top</description>
+    </meal>
+    <meal type="Lunch">
+        <name>Strawberry Belgian Waffles</name>
+        <total>30.00</total>
+        <description>Light Belgian Waffles covered with strawberries
+         and whipped cream</description>
+    </meal>
+</menu>

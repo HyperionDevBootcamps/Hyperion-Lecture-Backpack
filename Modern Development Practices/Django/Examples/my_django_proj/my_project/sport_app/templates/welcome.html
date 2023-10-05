@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style/welcome_style.css' %}">
+    <title>Choose a Sport</title>
+</head>
+<body>
+    <header>Please choose a sport:</header>
+    <div class="sport-options">
+        <a href="register_team?sport=football" class="sport-option">
+            <img src="{% static 'assets/football.jpg' %}" alt="Football" class="sport-image">
+            Football
+        </a>
+        <a href="register_team?sport=rugby" class="sport-option">
+            <img src="{% static 'assets/rugby.jpg' %}" alt="Rugby" class="sport-image">
+            Rugby
+        </a>
+        <a href="register_player?sport=track" class="sport-option">
+            <img src="{% static 'assets/track.jpg' %}" alt="Track" class="sport-image">
+            Track
+        </a>
+        <a href="register_player?sport=tennis" class="sport-option">
+            <img src="{% static 'assets/tennis.jpg' %}" alt="Tennis" class="sport-image">
+            Tennis
+        </a>
+        <a href="register_player?sport=golf" class="sport-option">
+            <img src="{% static 'assets/golf.jpg' %}" alt="Golf" class="sport-image">
+            Golf
+        </a>
+    </div>
+</body>
+</html>

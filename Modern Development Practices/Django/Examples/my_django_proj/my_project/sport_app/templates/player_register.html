@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Team</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add custom CSS styles here, if needed */
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="mb-4">Add Your Team</h2>
+                <form action="add_player/" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="playerName">Player Name</label>
+                        <input type="text" class="form-control" name="playerName" placeholder="Player Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="playerSurname">Player Surname</label>
+                        <input type="text" class="form-control" name="playerSurname" placeholder="Player Surname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="totalPlayers">Player Age</label>
+                        <input type="number" class="form-control" name="playerAge" placeholder="Player Age" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registrationCode">Registration Code</label>
+                        <input type="text" class="form-control" name="registrationCode" placeholder="Enter Registration Code" required>
+                    </div>
+                    <input type="hidden" name="sport" value="{{ sport }}">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

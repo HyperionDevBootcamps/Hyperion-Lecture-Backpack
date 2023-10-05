@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style/welcome_style.css' %}">
+    <title>Success</title>
+</head>
+<body>
+    {% block header %}
+    {% endblock %}
+    <div class="container mt-5">
+        <div class="login-form">
+            <form action="">
+                <button type="submit" class="btn btn-primary btn-login">Home</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

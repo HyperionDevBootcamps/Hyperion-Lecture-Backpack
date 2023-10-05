@@ -1,0 +1,24 @@
+.p1{
+    color: red;
+    font-family: Arial, sans-serif;
+    background-color: black;
+}
+#mainHeading{
+    font-family: Courier;
+}
+
+#lists{
+    display: grid;
+}
+
+ul li{
+    list-style: square;
+}
+ol{
+    grid-column: 1/6;
+    grid-row: 3;
+}
+ul{
+    grid-column: 6/13;
+    grid-row: 3;
+}
