@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Your Review</title>
+    
+    <!-- Include Bootstrap CSS for styling -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            text-align: center;
+            margin-top: 100px;
+        }
+        
+        .thank-you-message {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .btn-home {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    {% if sentiment in 'positive' %}
+    <h1>Thank You leaving a {{ sentiment }} Review</h1>
+    <p class="thank-you-message">
+        We appreciate your feedback and we are glad you had a good experience.
+    </p>
+    {% endif %}
+    {% if sentiment in 'negative' %}
+    <h1>We noticed you left a {{ sentiment }} Review</h1>
+    <p class="thank-you-message">
+        We appreciate your feedback and we are sorry you did not have an optimal experience.
+    </p>
+    {% endif %}
+
+    <a href="{% url 'review_app:review' %}" class="btn btn-primary btn-home">Back to Home</a>
+</div>
+
+<!-- Include Bootstrap JS (optional) -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
