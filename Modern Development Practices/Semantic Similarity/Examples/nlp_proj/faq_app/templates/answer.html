@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Q&A Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f7f7f7;
+        }
+
+        #container {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #question {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        #answer {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+
+        #ask-again-button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        #ask-again-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Question & Answer</h1>
+        <div id="question">
+            <strong>Q: {{ question }}</strong>
+        </div>
+        <div id="answer">
+            <p>A: {{ answer }}</p>
+        </div>
+        <a href="{% url 'faq_app:faq' %}"><button id="ask-again-button">Ask Again</button></a>
+    </div>
+</body>
+</html>
