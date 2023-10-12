@@ -75,8 +75,8 @@ def main():
                 runtime = input("Please enter the book's runtime:\n") 
                 if title and author and isbn and runtime:
                     book = create_book(AudioBook, title=title, author=author, isbn=isbn, runtime=runtime)
-            elif book_type.lower() == 'b' and title and author and isbn and runtime:
-                book = create_book(AudioBook, title=title, author=author, isbn=isbn, runtime=runtime)
+            elif book_type.lower() == 'b' and title and author and isbn:
+                book = create_book(Book, title=title, author=author, isbn=isbn)
             if book:
                 my_library.add_book(book)
             else:
@@ -102,6 +102,7 @@ def main():
 
         elif user_choice == "3":
             my_library.list_available_books()
+
         elif user_choice == "0":
             break
 

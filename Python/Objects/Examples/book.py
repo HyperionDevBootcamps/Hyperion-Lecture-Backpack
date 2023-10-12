@@ -32,4 +32,4 @@ class AudioBook(Book):
         
     def __str__(self):
         """Returns string representation of object"""
-        return f"Title: {self.title}\nAuthor: {self.author}\nisbn: {self.isbn}"
+        return f"Title: {self.title}\nAuthor: {self.author}\nisbn: {self.isbn}\nRuntime: {self.runtime}"
