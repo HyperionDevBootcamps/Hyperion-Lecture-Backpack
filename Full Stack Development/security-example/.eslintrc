@@ -1,0 +1,51 @@
+{
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "plugins": ["es5"],
+  "extends": [
+    "standard",
+    "eslint-config-es/node",
+    "eslint:recommended",
+    "plugin:es5/no-es2015",
+    "strongloop",
+    "prettier-standard",
+    "prettier"
+  ],
+  "parserOptions": { "ecmaVersion": 2017 },
+  "rules": {
+    "node/no-callback-literal": "warn",
+    "unicorn/filename-case": "warn",
+    "no-process-env": "off",
+    "no-multi-assign": "warn",
+    "global-require": "warn",
+    "unicorn/no-process-exit": "warn",
+
+    "unicorn/numeric-separators-style": "off",
+    "es5/no-es6-methods": "warn",
+    "es5/no-computed-properties": "off",
+    "line-comment-position": "off",
+    "no-inline-comments": "off",
+    "unicorn/consistent-destructuring": "off",
+    "consistent-this": "warn",
+    "es5/no-arrow-functions": "off",
+    "es5/no-block-scoping": "off",
+    "es5/no-shorthand-properties": "off",
+    "es5/no-template-literals": "off",
+    "no-unused-vars": "warn",
+    "unicorn/consistent-function-scoping": "warn",
+    "es5/no-destructuring": "off",
+    "no-restricted-modules": "error",
+    "no-useless-constructor": "off",
+    "no-underscore-dangle": "off",
+    "no-param-reassign": "off",
+    "prefer-promise-reject-errors": "warn",
+    "new-cap": "warn",
+    "camelcase": "warn",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "linebreak-style": 0,
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "quotes": ["error", "backtick"]
+  }
+}

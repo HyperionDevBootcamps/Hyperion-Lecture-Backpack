@@ -1,0 +1,4049 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Backend
+  contact: {}
+host: localhost:3000
+basePath: /v1
+securityDefinitions: {}
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /session/renew:
+    post:
+      description: >-
+        Renews the current session. In the backend there is a timer that marks a `Bearer Token` as expired. If your `Bearer Token` has expired then the backend sends the message `Use the last ott sent to you.`
+
+        Here you basically put the last ott sent to your mobile number in `token` and add your expired `Bearer Token` . After that your `Bearer Token` will be renewed.
+
+
+        However there is also a timer that marks an ott as expired. If the ott is marked expired then this endpoint will not work and you will need to go through the login process all over again.
+
+
+        Basically the timers in the backend ensure and auto-logout in case of a long period of inactivity.
+      summary: Renew expired session
+      tags:
+        - ott
+      operationId: Renewexpiredsession
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/RenewexpiredsessionRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /ott/resend:
+    get:
+      description: Resend OTT to user if he still has not received it.
+      summary: Resend ott
+      tags:
+        - ott
+      operationId: Resendott
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /verifyToken:
+    post:
+      description: >-
+        Verify that you received the OTT. Login first before using this.
+
+
+        `token`: The ott that you received.
+
+        `username`: Registered user name.
+      summary: Verify 2fa Token
+      tags:
+        - ott
+      operationId: Verify2faToken
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/Verify2faTokenRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /MagicLink:
+    post:
+      description: >-
+        Sends magic link to driver or customer.
+
+
+        `recipientEmail`: Magic link will be sent to this email.
+
+
+        `magicLinkType`: Can be either `driver` or `customer`. Describes the role of the user that the magic link will create.
+      summary: Send magic link
+      tags:
+        - magic-link
+      operationId: Sendmagiclink
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/SendmagiclinkRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+    get:
+      description: >-
+        Verify the magic link token sent to your email. Use this after `Send magic link`
+
+
+        Don't forget to add `token` as query param to the request as this is the token that is sent to you after running `Send magic link`.
+      summary: Verify
+      tags:
+        - magic-link
+      operationId: Verify
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: query
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /testmail:
+    post:
+      description: Test sendmail is working
+      summary: test mail
+      tags:
+        - magic-link
+      operationId: testmail
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/testmailrequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /login:
+    get:
+      description: Use `username` and `password` to login here
+      summary: login
+      tags:
+        - auth
+      operationId: login
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: password
+          in: query
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /ping-session:
+    get:
+      description: >-
+        Used to check whether session expired or not
+
+        Make sure to add the `bearer token` to the request before running.
+      summary: ping session
+      tags:
+        - auth
+      operationId: pingsession
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /ping-time:
+    get:
+      description: Gets the google checkin distance.
+      summary: ping time
+      tags:
+        - auth
+      operationId: pingtime
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /forget-password:
+    post:
+      description: Reset the user password. Reset password link will be sent to `email`.
+      summary: Forget password
+      tags:
+        - auth
+      operationId: Forgetpassword
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/ForgetpasswordRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /forget-password-verify/bccff546422f3d6262356fb584ce81d0abc85f90fa00cf34c0443b5d4f7bfed9:
+    put:
+      description: >-
+        To be used after `Forget password`. The reset password link to be sent to your email will look like this.
+
+
+        When you copy/paste the link to postman. Do not forget to add `password` along as this will be your new password.
+      summary: Forget password verify
+      tags:
+        - auth
+      operationId: Forgetpasswordverify
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/ForgetpasswordverifyRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /users:
+    post:
+      description: "Register a new user. Creates a user with the default `driver` and `admin` roles.\n\n`first_name` users first name\n\n`last_name` users surname\n\n`email` users contact email address. Must be unique.\n\n`username` the username with which user shall login. Must be unique.\n\n`password` the password to secure users account.\n\n`phoneNo` the users contact number and the number that will get the login OTT. Just add normal number here no need to add country prefix here as backend will do it for you. Just make sure to include the `countryCode` along with the request. There is a lookup API that checks if the number exists and add the relevant country prefix for you.\n\n`countryCode` needs to be ISO 3166-1 alpha-2. ([https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))\n\n`roles` can be either `admin`, `customer` or `driver`.\n\nResponse:  \nReturns the created user record. `_id` is the user id."
+      summary: Add user
+      tags:
+        - user
+      operationId: Adduser
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/AdduserRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+    get:
+      description: Get all users in the database.
+      summary: Get users
+      tags:
+        - user
+      operationId: Getusers
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /users/6231d4b6a59ceb433438de74:
+    delete:
+      description: "Deletes a user. \n`/v1/users/<user-id-here>`\n\nDeleting this user will also remove any driver or customer accounts associated with the userId."
+      summary: delete user
+      tags:
+        - user
+      operationId: deleteuser
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /users/622d36b63a2b89372ca33d4c:
+    put:
+      description: >-
+        Update user profile info. Don't forget to add the `userid` at the end of the URL.
+
+
+        `roles` the roles that the user can have.
+
+
+        `is_deleted` checks whether the user should be considered deleted. If this is set to `true` then no login can be done with this user credentials.
+
+
+        `status` just tells whether user is online or offline.
+      summary: update
+      tags:
+        - user
+      operationId: update
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/updaterequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /users/6245b15349af3a3ca0b6bc29:
+    get:
+      description: Get users list
+      summary: Get user
+      tags:
+        - user
+      operationId: Getuser
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /customer:
+    post:
+      description: "`name` is like a name of a company. Basically, the `customer` record is the company or organization that registers in backend and the `user` record is the person-of-contact.\n\n`name`, `address`, `picture`,`departments` and `requiresPhotSignature` are inputs for the `customer` record.\n\n`departments` is an array of department ids. These are the all the departments associated with the customer. Before you add a department id to `departments`, you need to create the department first by using the `Add department` endpoint. Department needs to be an existing one in the system.\n\n`userId` the id of the user to which you want to link the customer.\n\n`signatures`, `photos` and `attachments` are the params to use if you want to upload customer related-documents.\n\nResponse:  \nReturns the created customer."
+      summary: Add customer
+      tags:
+        - customer
+      operationId: Addcustomer
+      deprecated: false
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: name
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: departments[0]
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: requiresPhotoSignature
+          in: formData
+          required: true
+          type: boolean
+          description: ''
+        - name: address
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: addressLocation[Latitude]
+          in: formData
+          required: true
+          type: number
+          format: double
+          description: ''
+        - name: addressLocation[Longitude]
+          in: formData
+          required: true
+          type: number
+          format: double
+          description: ''
+        - name: userId
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: signatures
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: photos
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: attachments
+          in: formData
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      description: Get customer details by id.
+      summary: Get customers
+      tags:
+        - customer
+      operationId: Getcustomers
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /customer/62383d0f8fcffd27cc1d787a:
+    put:
+      description: Updates customer details. Don't forget to add customer id at the end of the url.
+      summary: Update customer
+      tags:
+        - customer
+      operationId: Updatecustomer
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdatecustomerRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      description: Get customer details by id.
+      summary: Get customer
+      tags:
+        - customer
+      operationId: Getcustomer
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /customer/618ff14e8311f0fecfd1a4c5:
+    delete:
+      description: Delete customer by id.
+      summary: Delete customer
+      tags:
+        - customer
+      operationId: Deletecustomer
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /customersbyname:
+    get:
+      description: Get customer details by id.
+      summary: Get customers by name
+      tags:
+        - customer
+      operationId: Getcustomersbyname
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /customer-address-autocomplete:
+    post:
+      description: >-
+        Gets a suggested addresses from the database and google maps api given a search term.
+
+
+        `address` this is the search term.
+
+
+        `location` so that you can restrict the search around a specific coordinate. Format: \[ `lat`, `long` \]
+
+
+        Response:
+
+
+        This endpoint brings back two address suggestions.
+
+
+        One from the database `address_suggestions`
+
+
+        And the other one from the google maps api `google_results`
+      summary: Customer address autocomplete
+      tags:
+        - customer
+      operationId: Customeraddressautocomplete
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/CustomeraddressautocompleteRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /jobs:
+    post:
+      description: "Add a new job\n\n`customer` is the customer id, remember this id needs to be from an existing customer in the system. If you have not created a customer yet use `Add customer` endpoint to create a new customer which will return a new customer id that you can place here.\n\n`Driver` is the driver id, remember it needs to be the id of an existing driver in the system, create the driver first if you haven't using the `Add driver` endpoint. If you don't include this in the request then the api will assign the nearest `STAT` type drivers id to this job in place of this.\n\n`chargetType` is basically the id of the service this job will utilize or the job type in simple words. e.g. ROUTE, STAT etc. This is useful during the time of billing. Charge types are finite and already defined in the system. Please use the `get all charge types` endpoint to get the id of the desired charge type you want to attach to this job and place it here.\n\n`items` additional notes.\n\n`Tasks` are basically the actions that the driver is required to do for the job to be considered complete. If these tasks are not complete, then the job will not be considered complete. Remember this array needs to have ids of the tasks that are existing in the system. So make sure to create a task in the `Add task` endpoint first and that will return a task id (in the form `_id`) that you can place here.\n\nOnce you run this the backend will also estimate the miles between the driver location and the `first` tasks location so make sure that the driver location and task location are existing coordinates in the google maps.\n\nResponse:  \nReturns the create job with the `_id` as the job id."
+      summary: Add job
+      tags:
+        - job
+      operationId: Addjob
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/AddjobRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      description: Get job details by id
+      summary: Get jobs
+      tags:
+        - job
+      operationId: Getjobs
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /jobs/6241e9f6e76ef154b0c55f17:
+    put:
+      description: Update job by id
+      summary: Update job
+      tags:
+        - job
+      operationId: Updatejob
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdatejobRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /jobs/reject/623c4777b0a8942eb015d09a:
+    put:
+      description: >-
+        When a `STAT` type driver is assigned job, he can reject the job. If that happens then the job will be assigned to the next available `STAT` driver.
+
+
+        In case there is no other `STAT` driver left to assign the job to then the job gets converted to a `queuedjob.`
+      summary: Reject job
+      tags:
+        - job
+      operationId: Rejectjob
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /jobs/skiptask/621f7feb436d963a0ce6f1a6/621f647359563a0b4c2bac24:
+    put:
+      description: >-
+        Skip task inside job.
+
+
+        `v1/job/skiptask/job_id/task_id`
+
+
+        This endpoint removes the selected task from the selected jobs task list and mark the task as `CANCELLED`. It will then assign the next task after the selected task in the jobs task list.
+      summary: Skip task
+      tags:
+        - job
+      operationId: Skiptask
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /jobs/accept/6246e4a703a6d71c30a6c499:
+    put:
+      description: "When a `STAT` type driver is assigned the job, he can choose to accept it or reject it. Once the driver accepts the job, the job start time will be marked with the current date timestamp and the job rejection history will be deleted.  \nJob will be marked as `ACCEPTED`"
+      summary: Accept job
+      tags:
+        - job
+      operationId: Acceptjob
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: task
+          in: query
+          required: true
+          type: number
+          format: double
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /completejob/623c4777b0a8942eb015d09a:
+    put:
+      description: >-
+        Converts the job to `pastjob` and marks it complete.
+
+
+        But make sure that before you do this, you have uploaded photo/signature proof for the tasks that require it through `update task` endpoint.
+
+
+        Once a task is marked complete, an email is sent to the task department including the photo/signature proof along as attachments.
+      summary: complete job
+      tags:
+        - job
+      operationId: completejob
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /canceljob/623bdb87d21a5acf0c957e8b:
+    put:
+      description: Cancel mark a `job` and convert it to a `pastjob`.
+      summary: cancel job
+      tags:
+        - job
+      operationId: canceljob
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /jobs/6230b1e308dca1b272e1a2b3:
+    delete:
+      description: Delete job by id
+      summary: Delete job
+      tags:
+        - job
+      operationId: Deletejob
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /jobs/6246135d3580903c4464eb98:
+    get:
+      description: Get job details by id
+      summary: Get job
+      tags:
+        - job
+      operationId: Getjob
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /pendingstatjobs:
+    get:
+      description: Get job details by id
+      summary: Get pending stat jobs
+      tags:
+        - job
+      operationId: Getpendingstatjobs
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /task:
+    post:
+      description: >-
+        Creates task record. `Be sure to use this endpoint before you create a job`
+
+
+        A task can have optional `customerid` with optional `departmentid` but if not then make sure `address` is typed correctly.
+
+
+        To complete a job, driver must do a series of tasks, this is the endpoint where one must create those tasks.
+
+
+        `customerID` the id of the customer associated with the task.
+
+
+        `address` the address to search for while creating the task, it does not need to be a full address here, it can be a simple search term as well, the API will search and fill up the address field and the task geolocation for you.
+
+
+        `contact` the contact number of the person to communicate with in case something is wrong with the task.
+
+
+        `extraNotes` additional information/comments in relation to the task.
+
+
+        `facility` the customer or company name.
+
+
+        `department` id of the department related to the task.
+
+
+        `isPickup` is this a pickup task? `true` or `false`
+
+
+        `chargeType` the service type that the task utilizes
+
+
+        Response:
+
+
+        Returns the created task record with `_id` as the task id.
+      summary: Add task
+      tags:
+        - task
+      operationId: Addtask
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/AddtaskRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      summary: get tasks
+      tags:
+        - task
+      operationId: gettasks
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /task/6244695ff7f2793b20277343:
+    put:
+      description: Update task by id.
+      summary: Update task
+      tags:
+        - task
+      operationId: Updatetask
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdatetaskRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /task/complete/623f58c65389e745b0809e07:
+    put:
+      description: >-
+        Update task by ID.
+
+
+        You will also upload the photo/signature proof for the task through this endpoint.
+      summary: Complete task
+      tags:
+        - task
+      operationId: Completetask
+      deprecated: false
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: signatures
+          in: formData
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /task/62443f4651390b33441c15ed:
+    get:
+      summary: get
+      tags:
+        - task
+      operationId: get
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /task/6220d599527d382456d21eb2:
+    delete:
+      summary: delete
+      tags:
+        - task
+      operationId: delete
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /pastjobs:
+    post:
+      description: Add a new job
+      summary: Add add past job
+      tags:
+        - past jobs
+      operationId: Addaddpastjob
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/AddaddpastjobRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      description: Get job details by id
+      summary: Get  past jobs
+      tags:
+        - past jobs
+      operationId: Getpastjobs
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /pastjobs/620e7224f130a8ed82c1d968:
+    put:
+      description: Update job by id
+      summary: Update past job
+      tags:
+        - past jobs
+      operationId: Updatepastjob
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdatepastjobRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /pastjobs/6225f21a527d382456ee5cbc:
+    delete:
+      description: Delete job by id
+      summary: Delete past job
+      tags:
+        - past jobs
+      operationId: Deletepastjob
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /pastjobs/6241893aeef7c4382075392e:
+    get:
+      description: Get job details by id
+      summary: Get past job
+      tags:
+        - past jobs
+      operationId: Getpastjob
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /seed:
+    get:
+      description: Get job details by id
+      summary: Seed past jobs
+      tags:
+        - past jobs
+      operationId: Seedpastjobs
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /driver:
+    post:
+      description: >-
+        Add driver and associate user that is sending the request with the driver.
+
+
+        `date_of_birth` driver DOB
+
+
+        `driverType` the type of driver. A driver type can be either `STAT` or `REGULAR`. Don't put any other value here!
+
+
+        `current_license_number` drivers current license number.
+
+
+        `home_address` drivers personal address.
+
+
+        `bank_name` which bank has the drivers bank account.
+
+
+        `account_title` the title of the bank account in `bank_name`.
+
+
+        `account_number` drivers bank account number.
+
+
+        `iban_number` the drivers IBAN number
+
+
+        `routing_number` drivers bank routing number
+
+
+        `on_duty` whether driver is available or not.
+
+
+        `addressLocation` the drivers geolocation.
+
+
+        `Use signatures, photos` and `attachments` params to upload driver related documents.
+
+
+        Response:
+
+
+        Returns the created driver account record and the address location id. `_id` is the driverId inside the driver object but inside the address object `_id` is the addressLocation id.
+      summary: Add driver
+      tags:
+        - driver
+      operationId: Adddriver
+      deprecated: false
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: date_of_birth
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: driverType
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: current_license_number
+          in: formData
+          required: true
+          type: integer
+          format: int32
+          description: ''
+        - name: home_address
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: bank_name
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: account_title
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: account_number
+          in: formData
+          required: true
+          type: integer
+          format: int32
+          description: ''
+        - name: iban_number
+          in: formData
+          required: true
+          type: integer
+          format: int32
+          description: ''
+        - name: routing_number
+          in: formData
+          required: true
+          type: integer
+          format: int32
+          description: ''
+        - name: on_duty
+          in: formData
+          required: true
+          type: boolean
+          description: ''
+        - name: commission
+          in: formData
+          required: true
+          type: number
+          format: double
+          description: ''
+        - name: userId
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: signatures
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: photos
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: attachments
+          in: formData
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      description: Get driver details by id
+      summary: Get drivers
+      tags:
+        - driver
+      operationId: Getdrivers
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /driver/623862e9bd180e359477eb12:
+    put:
+      description: >-
+        Update driver account. If you want to update driver user credentials then user `Update user` endpoint
+
+
+        If updating driver geolocation, api will check if driver is currently active on a job and will check if the driver has reached the job destination, if yes, it will mark the job automatically as complete and convert it to a `pastjob` provided that the job does not require photo/signature proof. Jobs that require proof cannot be auto-completed. The api will also update the distance travelled by the driver for the job by comparing the distance between driver previous location and current location.
+      summary: Update driver
+      tags:
+        - driver
+      operationId: Updatedriver
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdatedriverRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /driver/623857747094ab04c8f7d7ca:
+    delete:
+      description: Delete driver by id
+      summary: Delete driver
+      tags:
+        - driver
+      operationId: Deletedriver
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /driver/6245a348b2c1713bccf6b50d:
+    get:
+      description: >-
+        Get driver details by id. This endpoint search by both the `userId` or `driverId` of the driver
+
+
+        Response:
+
+
+        Gets you a driver from the database. Inside the json, `_id` is the `driverId` and `userId` is the id of the user.
+      summary: Get driver
+      tags:
+        - driver
+      operationId: Getdriver
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /driversonline:
+    get:
+      description: Get driver details by id
+      summary: Get online drivers
+      tags:
+        - driver
+      operationId: Getonlinedrivers
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /department:
+    post:
+      description: >-
+        Create departments. Remember the body needs to be of array form.
+
+
+        `departmentName` name of the department
+
+
+        `departmentEmail` the department managers email. Make sure its an existing email.
+
+
+        `departmentAddress` departments full address
+
+
+        `departmentPhoneNo` department contact number
+
+
+        `departmentContactPersonName` the name of the person that represents this department.
+
+
+        `requiresPhotoSignature` if `true` then the tasks associated with this department will not be marked complete until photo/signature proof is given.
+
+
+        `departmentLocation` department geolocation.
+
+
+        Response:
+
+
+        Returns in array form the department records that have been created with their respective department id in them as `_id`
+      summary: Add department
+      tags:
+        - department
+      operationId: Adddepartment
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            example:
+              - departmentName: test name
+                departmentEmail: test@gmail.com
+                departmentAddress: test number, test street, test city
+                departmentPhoneNo: XXXXXXXXXX
+                departmentContactPersonName: Test Person
+                requiresPhotoSignature: true
+                departmentLocation:
+                  Latitude: 30.2289207
+                  Longitude: -97.619973
+            type: array
+            items:
+              $ref: '#/definitions/AdddepartmentRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /department/617a7da7940c0c2fc44b71ed:
+    put:
+      summary: Update department
+      tags:
+        - department
+      operationId: Updatedepartment
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdatedepartmentRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /department/62383cd28fcffd27cc1d7873:
+    get:
+      summary: get
+      tags:
+        - department
+      operationId: Getget
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /department/6128c63fd9c2c40ef0b577f5:
+    delete:
+      summary: delete
+      tags:
+        - department
+      operationId: Deletedelete
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /audit:
+    post:
+      summary: Add audit
+      tags:
+        - audit
+      operationId: Addaudit
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/AddauditRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      summary: get audits
+      tags:
+        - audit
+      operationId: getaudits
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /audit/61af3e0885329a28bc05d536:
+    put:
+      summary: Update audit
+      tags:
+        - audit
+      operationId: Updateaudit
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdateauditRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      summary: get
+      tags:
+        - audit
+      operationId: Getget1
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /audit/612cb164ea18d91a14b6bbce:
+    delete:
+      summary: delete
+      tags:
+        - audit
+      operationId: Deletedelete1
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /supportInfo:
+    post:
+      summary: Add support info
+      tags:
+        - support-info
+      operationId: Addsupportinfo
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/AddsupportinfoRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      summary: get all
+      tags:
+        - support-info
+      operationId: getall
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /sendsupportemail/6242fa33a9468047f88b9e78:
+    post:
+      description: >-
+        Sends a support email. The id in the url is the id of the `supportInfo` record. Refer to `Add support info` section to get the support info id.
+
+
+        Do not forget to add `message` in the params. See example.
+      summary: Send support email
+      tags:
+        - support-info
+      operationId: Sendsupportemail
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/SendsupportemailRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /supportInfo/6148567f5cb8c23dbc7467ae:
+    put:
+      summary: Update support info
+      tags:
+        - support-info
+      operationId: Updatesupportinfo
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdatesupportinfoRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /supportInfo/6128ce86158322406cb74c98:
+    get:
+      summary: get
+      tags:
+        - support-info
+      operationId: Getget2
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /supportInfo/622e35bd89e67f1bd0daeefe:
+    delete:
+      summary: delete
+      tags:
+        - support-info
+      operationId: Deletedelete2
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /upload/619cebac52d3e13e14f2f88a:
+    get:
+      summary: get
+      tags:
+        - upload
+      operationId: Getget3
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /upload:
+    post:
+      summary: add uploads
+      tags:
+        - upload
+      operationId: adduploads
+      deprecated: false
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: signatures
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: photos
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: attachments
+          in: formData
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /upload/623b444db46a7d1a88b27769:
+    put:
+      summary: update uploads
+      tags:
+        - upload
+      operationId: updateuploads
+      deprecated: false
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: signatures
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: photos
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: attachments
+          in: formData
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    delete:
+      summary: delete upload
+      tags:
+        - upload
+      operationId: deleteupload
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /uploads/admin-profile-pic.png:
+    get:
+      summary: get upload file
+      tags:
+        - upload
+      operationId: getuploadfile
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /upload/driver/6172b00582c2580c144600d9:
+    get:
+      description: >-
+        **REMEMBER**
+
+
+        upload/driver/ `driverId`
+
+
+        Gets all uploads by a **driver**
+      summary: get uploads by driver
+      tags:
+        - upload
+      operationId: getuploadsbydriver
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /QueuedJob:
+    post:
+      description: Creates a queued job. This also sends a pusher notification to the frontend on creation. The channel name is `my-channel` and event name is `admin id`. This notification only goes to the admins.
+      summary: Add queued job
+      tags:
+        - queued-job
+      operationId: Addqueuedjob
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/AddqueuedjobRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      summary: get queued jobs
+      tags:
+        - queued-job
+      operationId: getqueuedjobs
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /QueuedJob/623841008fcffd27cc1d78f1:
+    put:
+      description: Updates queued job by id.
+      summary: Update queued job
+      tags:
+        - queued-job
+      operationId: Updatequeuedjob
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdatequeuedjobRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /QueuedJob/assign/62383f7f8fcffd27cc1d78be/to/623862e9bd180e359477eb12:
+    put:
+      description: /QueuedJob/assign/ `:queuedJobId` /to/ `:driverId`
+      summary: Assign
+      tags:
+        - queued-job
+      operationId: Assign
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /QueuedJob/612cb1ffea18d91a14b6bbec:
+    get:
+      summary: get
+      tags:
+        - queued-job
+      operationId: Getget4
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /QueuedJob/6230b57508dca1b272e1c168:
+    delete:
+      summary: delete
+      tags:
+        - queued-job
+      operationId: Deletedelete3
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /calendarevent:
+    post:
+      summary: Add calendar-event
+      tags:
+        - calendar-event
+      operationId: Addcalendar-event
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/Addcalendar-eventRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /calendarevent/615f008e4f39cec09c09f448:
+    put:
+      summary: update calendar event
+      tags:
+        - calendar-event
+      operationId: updatecalendarevent
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/updatecalendareventrequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /CalendarEvent/614c57cca90378344c798def:
+    get:
+      summary: get
+      tags:
+        - calendar-event
+      operationId: Getget5
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /CalendarEvent/07/10/2021:
+    get:
+      summary: get by date
+      tags:
+        - calendar-event
+      operationId: getbydate
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /CalendarEvent/612cb283ea18d91a14b6bc05:
+    delete:
+      summary: delete
+      tags:
+        - calendar-event
+      operationId: Deletedelete4
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /template:
+    post:
+      description: Add template
+      summary: Add template
+      tags:
+        - template
+      operationId: Addtemplate
+      deprecated: false
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: templateName
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: template
+          in: formData
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      description: >-
+        Get template by id
+
+
+        http://localhost:3000/v1/template/[template_id]
+      summary: get templates
+      tags:
+        - template
+      operationId: gettemplates
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /template/612cb2beea18d91a14b6bc0e:
+    put:
+      summary: Update template
+      tags:
+        - template
+      operationId: Updatetemplate
+      deprecated: false
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: templateName
+          in: formData
+          required: true
+          type: string
+          description: ''
+        - name: template
+          in: formData
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      description: >-
+        Get template by id
+
+
+        http://localhost:3000/v1/template/[template_id]
+      summary: get
+      tags:
+        - template
+      operationId: Getget6
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    delete:
+      description: >-
+        http://localhost:3000/v1/template/[template_id]
+
+
+        Delete template by id
+      summary: Delete
+      tags:
+        - template
+      operationId: Delete
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /chargeType:
+    post:
+      summary: create
+      tags:
+        - charge-type
+      operationId: create
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/createrequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      summary: get all
+      tags:
+        - charge-type
+      operationId: Getgetall
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /chargeType/619779ce1ca9ad2d2c56f5b6:
+    put:
+      summary: update
+      tags:
+        - charge-type
+      operationId: Putupdate
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/updaterequest1'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /chargeType/61ade1f0396bdad41238c465:
+    get:
+      summary: read
+      tags:
+        - charge-type
+      operationId: read
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /chargeType/61a5f53b33eb0f11983a98e1:
+    delete:
+      summary: delete
+      tags:
+        - charge-type
+      operationId: Deletedelete5
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /schemas:
+    get:
+      description: Gets all the available tables inside the database.
+      summary: Get all schemas
+      tags:
+        - schemas
+      operationId: Getallschemas
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /schemas/Department:
+    get:
+      description: >-
+        Get all records inside a table in the database. To get all the available tables in the database use get `v1/schemas` endpoint.
+
+
+        Filters:
+
+
+        `customer` to filter by customer id
+
+
+        `department` to filter by department id
+
+
+        `from` and `to` to filter records by date.
+      summary: Get schema
+      tags:
+        - schemas
+      operationId: Getschema
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    put:
+      description: >-
+        Updates a record dynamically. Make sure to mention the Table in which the record exists in the url. You can get the list of tables in the database using the get `schemas/` endpoint.
+
+
+        _id is the id of the record you want to update
+
+
+        The rest of the json, you can add the property of the record that you want to update.
+      summary: Update document
+      tags:
+        - schemas
+      operationId: Updatedocument
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdatedocumentRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /geolocation/estimate:
+    post:
+      summary: Estimate distance
+      tags:
+        - Geolocation
+      operationId: Estimatedistance
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/EstimatedistanceRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /roads:
+    post:
+      description: Gets all available paths from source to destination
+      summary: Roads
+      tags:
+        - Geolocation
+      operationId: Roads
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/RoadsRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /geolocation:
+    post:
+      summary: Create
+      tags:
+        - Geolocation
+      operationId: Create
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/CreateRequest1'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+    get:
+      summary: Read all
+      tags:
+        - Geolocation
+      operationId: Readall
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /geoupdate:
+    post:
+      summary: Geolocation update webhook
+      tags:
+        - Geolocation
+      operationId: Geolocationupdatewebhook
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/GeolocationupdatewebhookRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /geolocation/6245a348b2c1713bccf6b50c:
+    put:
+      summary: Update
+      tags:
+        - Geolocation
+      operationId: Update
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdateRequest2'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /geolocation/616974bc578ee026c8bc3c2d:
+    get:
+      summary: Read
+      tags:
+        - Geolocation
+      operationId: Read
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /geolocation/618b8bc094da222f0c1d48c0:
+    delete:
+      summary: Delete
+      tags:
+        - Geolocation
+      operationId: Delete1
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security: []
+  /metadata/614856265cb8c23dbc7467a8:
+    put:
+      description: >-
+        Update the extensive data that you created. The url contains the id of that extensive data.
+
+
+        Add the update you want to add to the extensive data in the request body. You can add any field you like.
+      summary: Update metadata
+      tags:
+        - metadata
+      operationId: Updatemetadata
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/UpdatemetadataRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      description: Get extensive data. The id in the url is the id of the extensive data itself, not the id of the row to which this additional data is associated with.
+      summary: Get metadata
+      tags:
+        - metadata
+      operationId: Getmetadata
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    delete:
+      description: Delete the extensive data. The url must contain the id of the additional data, **not the data of the row to which this additional data is associated with.**
+      summary: Delete metadata
+      tags:
+        - metadata
+      operationId: Deletemetadata
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /metadata:
+    get:
+      description: "Get all associated data inside the database regardless of which row is the additional data related to.  \n  \ndataId is the id of the row that the additional data is associated with. e.g get all additional data associated with `61b9056cb2698427dc3a9186`\n\ntype is the type of additional data that you want, to get all the available types use the get `schemas/` endpoint.\n\n`from` and `to` is if you want to restrict by data."
+      summary: Get all metadata
+      tags:
+        - metadata
+      operationId: Getallmetadata
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: from
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: to
+          in: query
+          required: true
+          type: string
+          description: ''
+        - name: type
+          in: query
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    post:
+      description: >-
+        Add extensive data to a row in the database.
+
+
+        _id is the id of that row.
+
+
+        The rest of the json, you can add the extensive fields thast you want to add.
+      summary: Add metadata
+      tags:
+        - metadata
+      operationId: Addmetadata
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/AddmetadataRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /weekly:
+    post:
+      summary: add
+      tags:
+        - weekly-route
+      operationId: add
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/addrequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      summary: get all
+      tags:
+        - weekly-route
+      operationId: Getgetall1
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /weekly/61965465a7d91f095899ec48:
+    put:
+      summary: update
+      tags:
+        - weekly-route
+      operationId: Putupdate1
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/updaterequest3'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+    get:
+      summary: get
+      tags:
+        - weekly-route
+      operationId: Getget7
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /weekly/6193ce615ce84f1d506b920f:
+    delete:
+      summary: delete
+      tags:
+        - weekly-route
+      operationId: Deletedelete6
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/deleterequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /billing:
+    post:
+      summary: Create billing
+      tags:
+        - billing
+      operationId: Createbilling
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CreatebillingRequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      security:
+        - bearer: []
+  /billing/619e4d2e4879b7309c8ce233.pdf:
+    get:
+      summary: Get billing file
+      tags:
+        - billing
+      operationId: Getbillingfile
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          required: false
+          default: Bearer {token}
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+definitions:
+  RenewexpiredsessionRequest:
+    title: RenewexpiredsessionRequest
+    example:
+      token: 387725
+    type: object
+    properties:
+      token:
+        type: integer
+        format: int32
+    required:
+      - token
+  Verify2faTokenRequest:
+    title: Verify2faTokenRequest
+    example:
+      token: 551652
+      username: test4
+    type: object
+    properties:
+      token:
+        type: integer
+        format: int32
+      username:
+        type: string
+    required:
+      - token
+      - username
+  SendmagiclinkRequest:
+    title: SendmagiclinkRequest
+    example:
+      recipientEmail: xxxx@gmail.com
+      magicLinkType: customer
+    type: object
+    properties:
+      recipientEmail:
+        type: string
+      magicLinkType:
+        type: string
+    required:
+      - recipientEmail
+      - magicLinkType
+  testmailrequest:
+    title: testmailrequest
+    example:
+      recipientEmail: joe@gmail.com
+      path: /usr/sbin/sendmail
+      fromEmail: root@ubuntu-s-1vcpu-1gb-sfo3-01
+    type: object
+    properties:
+      recipientEmail:
+        type: string
+      path:
+        type: string
+      fromEmail:
+        type: string
+    required:
+      - recipientEmail
+      - path
+      - fromEmail
+  ForgetpasswordRequest:
+    title: ForgetpasswordRequest
+    example:
+      email: xxxxx@gmail.com
+    type: object
+    properties:
+      email:
+        type: string
+    required:
+      - email
+  ForgetpasswordverifyRequest:
+    title: ForgetpasswordverifyRequest
+    example:
+      password: pass
+    type: object
+    properties:
+      password:
+        type: string
+    required:
+      - password
+  AdduserRequest:
+    title: AdduserRequest
+    example:
+      first_name: test
+      last_name: test
+      email: test4@gmail.com
+      username: test4
+      password: test4
+      phoneNo: '000000000'
+      countryCode: XX
+      roles:
+        - admin
+        - driver
+    type: object
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+      email:
+        type: string
+      username:
+        type: string
+      password:
+        type: string
+      phoneNo:
+        type: string
+      countryCode:
+        type: string
+      roles:
+        type: array
+        items:
+          type: string
+    required:
+      - first_name
+      - last_name
+      - email
+      - username
+      - password
+      - phoneNo
+      - countryCode
+      - roles
+  updaterequest:
+    title: updaterequest
+    example:
+      first_name: test15
+      last_name: test15
+      countryCode: XX
+      phoneNo: XXXXXXXXXX
+    type: object
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+      countryCode:
+        type: string
+      phoneNo:
+        type: string
+    required:
+      - first_name
+      - last_name
+      - countryCode
+      - phoneNo
+  UpdatecustomerRequest:
+    title: UpdatecustomerRequest
+    example:
+      name: Customer Test
+    type: object
+    properties:
+      name:
+        type: string
+    required:
+      - name
+  CustomeraddressautocompleteRequest:
+    title: CustomeraddressautocompleteRequest
+    example:
+      address: test
+      location:
+        - 30
+        - 30
+    type: object
+    properties:
+      address:
+        type: string
+      location:
+        type: array
+        items:
+          type: integer
+          format: int32
+    required:
+      - address
+      - location
+  AddjobRequest:
+    title: AddjobRequest
+    example:
+      estimatedArrival: 2021-08-20T10:16:28
+      customer: gfgfgfdgfdeteg44etreter
+      department: null
+      chargeType: gfgfgfdgfdeteg44etreter
+      items:
+        - Note 1
+        - Note 2
+      Tasks:
+        - 6244695ff7f2793b20277343
+        - '624448942992932644505234'
+      Driver: 6245a348b2c1713bccf6b50d
+    type: object
+    properties:
+      estimatedArrival:
+        type: string
+      customer:
+        type: string
+      department:
+        type: string
+      chargeType:
+        type: string
+      items:
+        type: array
+        items:
+          type: string
+      Tasks:
+        type: array
+        items:
+          type: string
+      Driver:
+        type: string
+    required:
+      - estimatedArrival
+      - customer
+      - department
+      - chargeType
+      - items
+      - Tasks
+      - Driver
+  UpdatejobRequest:
+    title: UpdatejobRequest
+    example:
+      status: PENDING
+    type: object
+    properties:
+      status:
+        type: string
+    required:
+      - status
+  AddtaskRequest:
+    title: AddtaskRequest
+    example:
+      customerID: null
+      companyname: XXXXXXX
+      chargeType: 554ggrgtrgrtgrtgtrgrtge
+      address: test
+      contact: XXXXXXXXXX
+      requiresPhotoSignature: true
+      extraNotes: test notes 4 lorem
+      facility: test facility 4 lorem
+      department: null
+      isPickup: true
+    type: object
+    properties:
+      customerID:
+        type: string
+      companyname:
+        type: string
+      chargeType:
+        type: string
+      address:
+        type: string
+      contact:
+        type: string
+      requiresPhotoSignature:
+        type: boolean
+      extraNotes:
+        type: string
+      facility:
+        type: string
+      department:
+        type: string
+      isPickup:
+        type: boolean
+    required:
+      - customerID
+      - companyname
+      - chargeType
+      - address
+      - contact
+      - requiresPhotoSignature
+      - extraNotes
+      - facility
+      - department
+      - isPickup
+  UpdatetaskRequest:
+    title: UpdatetaskRequest
+    example:
+      status: PENDING
+    type: object
+    properties:
+      status:
+        type: string
+    required:
+      - status
+  AddaddpastjobRequest:
+    title: AddaddpastjobRequest
+    example:
+      status: COMPLETE
+      chargeType: 61e83056283e273fe0258f29
+      upload: 612cb1dfea18d91a14b6bbe1
+      stopId: stopidaaaab
+      estimatedArrival: 2021-08-21
+      endDate: 2022-01-10
+      estimatedMiles: '255'
+      customer: 61c23e714b1248390c352267
+      zipCode: 7560
+      items: []
+      Tasks:
+        - 61eec4b455f5a22fd4c9afca
+      Driver: 61b9056cb2698427dc3a9186
+    type: object
+    properties:
+      status:
+        type: string
+      chargeType:
+        type: string
+      upload:
+        type: string
+      stopId:
+        type: string
+      estimatedArrival:
+        type: string
+      endDate:
+        type: string
+      estimatedMiles:
+        type: string
+      customer:
+        type: string
+      zipCode:
+        type: integer
+        format: int32
+      items:
+        type: array
+        items:
+          type: string
+      Tasks:
+        type: array
+        items:
+          type: string
+      Driver:
+        type: string
+    required:
+      - status
+      - chargeType
+      - upload
+      - stopId
+      - estimatedArrival
+      - endDate
+      - estimatedMiles
+      - customer
+      - zipCode
+      - items
+      - Tasks
+      - Driver
+  UpdatepastjobRequest:
+    title: UpdatepastjobRequest
+    example:
+      status: TEST
+    type: object
+    properties:
+      status:
+        type: string
+    required:
+      - status
+  UpdatedriverRequest:
+    title: UpdatedriverRequest
+    example:
+      date_of_birth: 2016-06-03
+      driverType: REGULAR
+      current_license_number: '000000000'
+      home_address: test address
+      bank_name: test bank
+      account_title: test40
+      account_number: '0000000000'
+      iban_number: '0000000000'
+      routing_number: '000000000'
+      on_duty: true
+      commission: 0.6
+      addressLocation:
+        Latitude: '28.0603562'
+        Longitude: '-80.6083946'
+    type: object
+    properties:
+      date_of_birth:
+        type: string
+      driverType:
+        type: string
+      current_license_number:
+        type: string
+      home_address:
+        type: string
+      bank_name:
+        type: string
+      account_title:
+        type: string
+      account_number:
+        type: string
+      iban_number:
+        type: string
+      routing_number:
+        type: string
+      on_duty:
+        type: boolean
+      commission:
+        type: number
+        format: double
+      addressLocation:
+        $ref: '#/definitions/AddressLocation'
+    required:
+      - date_of_birth
+      - driverType
+      - current_license_number
+      - home_address
+      - bank_name
+      - account_title
+      - account_number
+      - iban_number
+      - routing_number
+      - on_duty
+      - commission
+      - addressLocation
+  AddressLocation:
+    title: AddressLocation
+    example:
+      Latitude: '28.0603562'
+      Longitude: '-80.6083946'
+    type: object
+    properties:
+      Latitude:
+        type: string
+      Longitude:
+        type: string
+    required:
+      - Latitude
+      - Longitude
+  AdddepartmentRequest:
+    title: AdddepartmentRequest
+    example:
+      departmentName: test name
+      departmentEmail: test@gmail.com
+      departmentAddress: test number, test street, test city
+      departmentPhoneNo: XXXXXXXXXX
+      departmentContactPersonName: Test Person
+      requiresPhotoSignature: true
+      departmentLocation:
+        Latitude: 30.2289207
+        Longitude: -97.619973
+    type: object
+    properties:
+      departmentName:
+        type: string
+      departmentEmail:
+        type: string
+      departmentAddress:
+        type: string
+      departmentPhoneNo:
+        type: string
+      departmentContactPersonName:
+        type: string
+      requiresPhotoSignature:
+        type: boolean
+      departmentLocation:
+        $ref: '#/definitions/DepartmentLocation'
+    required:
+      - departmentName
+      - departmentEmail
+      - departmentAddress
+      - departmentPhoneNo
+      - departmentContactPersonName
+      - requiresPhotoSignature
+      - departmentLocation
+  DepartmentLocation:
+    title: DepartmentLocation
+    example:
+      Latitude: 30.2289207
+      Longitude: -97.619973
+    type: object
+    properties:
+      Latitude:
+        type: number
+        format: double
+      Longitude:
+        type: number
+        format: double
+    required:
+      - Latitude
+      - Longitude
+  UpdatedepartmentRequest:
+    title: UpdatedepartmentRequest
+    example:
+      departmentName: test department
+      requiresPhotoSignature: true
+      departmentEmail: test@gmail.com
+      departmentAddress: test address
+      departmentPhoneNo: XXXXXXXXXX
+      departmentContactPersonName: Test Person
+      departmentLocation:
+        Latitude: 30.2289207
+        Longitude: -97.619973
+    type: object
+    properties:
+      departmentName:
+        type: string
+      requiresPhotoSignature:
+        type: boolean
+      departmentEmail:
+        type: string
+      departmentAddress:
+        type: string
+      departmentPhoneNo:
+        type: string
+      departmentContactPersonName:
+        type: string
+      departmentLocation:
+        $ref: '#/definitions/DepartmentLocation'
+    required:
+      - departmentName
+      - requiresPhotoSignature
+      - departmentEmail
+      - departmentAddress
+      - departmentPhoneNo
+      - departmentContactPersonName
+      - departmentLocation
+  AddauditRequest:
+    title: AddauditRequest
+    example:
+      user_id: 612cad96720d770a08eb92ea
+      entity_name: fdgfdgdg
+      action_type: dgfdgdfgd
+      action_time: 2021-08-19T01:31:52
+    type: object
+    properties:
+      user_id:
+        type: string
+      entity_name:
+        type: string
+      action_type:
+        type: string
+      action_time:
+        type: string
+    required:
+      - user_id
+      - entity_name
+      - action_type
+      - action_time
+  UpdateauditRequest:
+    title: UpdateauditRequest
+    example:
+      entity_name: ffff
+      action_type: dgfdgdfgd
+      action_time: ''
+    type: object
+    properties:
+      entity_name:
+        type: string
+      action_type:
+        type: string
+      action_time:
+        type: string
+    required:
+      - entity_name
+      - action_type
+      - action_time
+  AddsupportinfoRequest:
+    title: AddsupportinfoRequest
+    example:
+      contactPersonName: Test Person
+      contactPersonEmail: test@gmail.com
+      contactPersonPhone: XXXXXXXXXX
+      contactPersonId: jsdfisdjf89jsdijf8dsjj
+      message: This is just a test.
+      onCall: true
+    type: object
+    properties:
+      contactPersonName:
+        type: string
+      contactPersonEmail:
+        type: string
+      contactPersonPhone:
+        type: string
+      contactPersonId:
+        type: string
+      message:
+        type: string
+      onCall:
+        type: boolean
+    required:
+      - contactPersonName
+      - contactPersonEmail
+      - contactPersonPhone
+      - contactPersonId
+      - message
+      - onCall
+  SendsupportemailRequest:
+    title: SendsupportemailRequest
+    example:
+      name: Test Person
+      email: test@gmail.com
+      phone: '0000000000'
+      message: This is just a test.
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      message:
+        type: string
+    required:
+      - name
+      - email
+      - phone
+      - message
+  UpdatesupportinfoRequest:
+    title: UpdatesupportinfoRequest
+    example:
+      contactPersonName: test
+      contactPersonEmail: tes@tgmail.com
+      contactPersonPhone: XXXXXXXXXXXXX
+      contactPersonId: 612cad96720d770a08eb92ea
+    type: object
+    properties:
+      contactPersonName:
+        type: string
+      contactPersonEmail:
+        type: string
+      contactPersonPhone:
+        type: string
+      contactPersonId:
+        type: string
+    required:
+      - contactPersonName
+      - contactPersonEmail
+      - contactPersonPhone
+      - contactPersonId
+  AddqueuedjobRequest:
+    title: AddqueuedjobRequest
+    example:
+      customer: 62383d0f8fcffd27cc1d787a
+      department: 62383cd28fcffd27cc1d7873
+      tasks:
+        - 62383e388fcffd27cc1d789b
+      startTime: 2021-08-01
+      endTime: 2021-08-01
+      chargeType: 61e82ff4283e273fe0258f23
+      items:
+        - Note 1
+        - Note 2
+    type: object
+    properties:
+      customer:
+        type: string
+      department:
+        type: string
+      tasks:
+        type: array
+        items:
+          type: string
+      startTime:
+        type: string
+      endTime:
+        type: string
+      chargeType:
+        type: string
+      items:
+        type: array
+        items:
+          type: string
+    required:
+      - customer
+      - department
+      - tasks
+      - startTime
+      - endTime
+      - chargeType
+      - items
+  UpdatequeuedjobRequest:
+    title: UpdatequeuedjobRequest
+    example:
+      customer: 62383d0f8fcffd27cc1d787a
+      department: 62383cd28fcffd27cc1d7873
+      tasks:
+        - 62383e388fcffd27cc1d789b
+      startTime: 2021-08-01
+      endTime: 2021-08-01
+      chargeType: 61e82ff4283e273fe0258f23
+      items:
+        - Note 1
+        - Note 2
+    type: object
+    properties:
+      customer:
+        type: string
+      department:
+        type: string
+      tasks:
+        type: array
+        items:
+          type: string
+      startTime:
+        type: string
+      endTime:
+        type: string
+      chargeType:
+        type: string
+      items:
+        type: array
+        items:
+          type: string
+    required:
+      - customer
+      - department
+      - tasks
+      - startTime
+      - endTime
+      - chargeType
+      - items
+  Addcalendar-eventRequest:
+    title: Addcalendar-eventRequest
+    example:
+      title: redsfsdfsd
+      start: 01/10/2021
+      end: 25/10/2021
+      color: fdgfdgd
+      allDay: true
+      descriptiveHtml: redfgfdgdfgfdgd
+    type: object
+    properties:
+      title:
+        type: string
+      start:
+        type: string
+      end:
+        type: string
+      color:
+        type: string
+      allDay:
+        type: boolean
+      descriptiveHtml:
+        type: string
+    required:
+      - title
+      - start
+      - end
+      - color
+      - allDay
+      - descriptiveHtml
+  updatecalendareventrequest:
+    title: updatecalendareventrequest
+    example:
+      title: johndoe
+      start: 01/10/2021
+      end: 01/10/2021
+      color: fdgfdgd
+      allDay: true
+      descriptiveHtml: redfgfdgdfgfdgd
+    type: object
+    properties:
+      title:
+        type: string
+      start:
+        type: string
+      end:
+        type: string
+      color:
+        type: string
+      allDay:
+        type: boolean
+      descriptiveHtml:
+        type: string
+    required:
+      - title
+      - start
+      - end
+      - color
+      - allDay
+      - descriptiveHtml
+  createrequest:
+    title: createrequest
+    example:
+      name: SPECIAL REQUEST
+      stop_rate: 11.5
+      mileage_rate: 0.88
+    type: object
+    properties:
+      name:
+        type: string
+      stop_rate:
+        type: number
+        format: double
+      mileage_rate:
+        type: number
+        format: double
+    required:
+      - name
+      - stop_rate
+      - mileage_rate
+  updaterequest1:
+    title: updaterequest1
+    example:
+      name: ROUTE
+      rate: 300
+      stop_rate: 666
+      mileage_rate: 90.1
+    type: object
+    properties:
+      name:
+        type: string
+      rate:
+        type: integer
+        format: int32
+      stop_rate:
+        type: integer
+        format: int32
+      mileage_rate:
+        type: number
+        format: double
+    required:
+      - name
+      - rate
+      - stop_rate
+      - mileage_rate
+  UpdatedocumentRequest:
+    title: UpdatedocumentRequest
+    example:
+      _id: 614856265cb8c23dbc7467a8
+      departmentName: johndoe
+    type: object
+    properties:
+      _id:
+        type: string
+      departmentName:
+        type: string
+    required:
+      - _id
+      - departmentName
+  EstimatedistanceRequest:
+    title: EstimatedistanceRequest
+    example:
+      locations:
+        origin:
+          Latitude: '10'
+          Longitude: '10'
+        destination:
+          Latitude: '30'
+          Longitude: '30'
+    type: object
+    properties:
+      locations:
+        $ref: '#/definitions/Locations'
+    required:
+      - locations
+  Locations:
+    title: Locations
+    example:
+      origin:
+        Latitude: '10'
+        Longitude: '10'
+      destination:
+        Latitude: '30'
+        Longitude: '30'
+    type: object
+    properties:
+      origin:
+        $ref: '#/definitions/Origin'
+      destination:
+        $ref: '#/definitions/Destination'
+    required:
+      - origin
+      - destination
+  Origin:
+    title: Origin
+    example:
+      Latitude: '10'
+      Longitude: '10'
+    type: object
+    properties:
+      Latitude:
+        type: string
+      Longitude:
+        type: string
+    required:
+      - Latitude
+      - Longitude
+  Destination:
+    title: Destination
+    example:
+      Latitude: '30'
+      Longitude: '30'
+    type: object
+    properties:
+      Latitude:
+        type: string
+      Longitude:
+        type: string
+    required:
+      - Latitude
+      - Longitude
+  RoadsRequest:
+    title: RoadsRequest
+    example:
+      locations:
+        origin:
+          Latitude: 10
+          Longitude: 10
+        destination:
+          Latitude: 30
+          Longitude: 30
+    type: object
+    properties:
+      locations:
+        $ref: '#/definitions/Locations1'
+    required:
+      - locations
+  Locations1:
+    title: Locations1
+    example:
+      origin:
+        Latitude: 10
+        Longitude: 10
+      destination:
+        Latitude: 30
+        Longitude: 30
+    type: object
+    properties:
+      origin:
+        $ref: '#/definitions/Origin1'
+      destination:
+        $ref: '#/definitions/Destination1'
+    required:
+      - origin
+      - destination
+  Origin1:
+    title: Origin1
+    example:
+      Latitude: 10
+      Longitude: 10
+    type: object
+    properties:
+      Latitude:
+        type: integer
+        format: int32
+      Longitude:
+        type: integer
+        format: int32
+    required:
+      - Latitude
+      - Longitude
+  Destination1:
+    title: Destination1
+    example:
+      Latitude: 30
+      Longitude: 30
+    type: object
+    properties:
+      Latitude:
+        type: integer
+        format: int32
+      Longitude:
+        type: integer
+        format: int32
+    required:
+      - Latitude
+      - Longitude
+  CreateRequest1:
+    title: CreateRequest1
+    example:
+      Longitude: 10
+      Latitude: 10
+    type: object
+    properties:
+      Longitude:
+        type: integer
+        format: int32
+      Latitude:
+        type: integer
+        format: int32
+    required:
+      - Longitude
+      - Latitude
+  GeolocationupdatewebhookRequest:
+    title: GeolocationupdatewebhookRequest
+    example:
+      location:
+        is_moving: true
+        uuid: c2949301-0e1e-4256-b84c-92a85b687521
+        timestamp: 2022-03-22T13:50:22.000Z
+        odometer: 934.3
+        coords:
+          latitude: -2.8911382
+          longitude: -79.0345691
+          accuracy: 15.9
+          speed: 1.49
+          speed_accuracy: -1
+          heading: 189.25
+          heading_accuracy: -1
+          altitude: 2615.3
+          altitude_accuracy: 4
+        activity:
+          type: walking
+          confidence: 100
+        battery:
+          is_charging: false
+          level: 0.18
+        extras: {}
+      user_id: 6245a2b6b2c1713bccf6b503
+    type: object
+    properties:
+      location:
+        $ref: '#/definitions/Location'
+      user_id:
+        type: string
+    required:
+      - location
+      - user_id
+  Location:
+    title: Location
+    example:
+      is_moving: true
+      uuid: c2949301-0e1e-4256-b84c-92a85b687521
+      timestamp: 2022-03-22T13:50:22.000Z
+      odometer: 934.3
+      coords:
+        latitude: -2.8911382
+        longitude: -79.0345691
+        accuracy: 15.9
+        speed: 1.49
+        speed_accuracy: -1
+        heading: 189.25
+        heading_accuracy: -1
+        altitude: 2615.3
+        altitude_accuracy: 4
+      activity:
+        type: walking
+        confidence: 100
+      battery:
+        is_charging: false
+        level: 0.18
+      extras: {}
+    type: object
+    properties:
+      is_moving:
+        type: boolean
+      uuid:
+        type: string
+      timestamp:
+        type: string
+      odometer:
+        type: number
+        format: double
+      coords:
+        $ref: '#/definitions/Coords'
+      activity:
+        $ref: '#/definitions/Activity'
+      battery:
+        $ref: '#/definitions/Battery'
+      extras:
+        type: object
+    required:
+      - is_moving
+      - uuid
+      - timestamp
+      - odometer
+      - coords
+      - activity
+      - battery
+      - extras
+  Coords:
+    title: Coords
+    example:
+      latitude: -2.8911382
+      longitude: -79.0345691
+      accuracy: 15.9
+      speed: 1.49
+      speed_accuracy: -1
+      heading: 189.25
+      heading_accuracy: -1
+      altitude: 2615.3
+      altitude_accuracy: 4
+    type: object
+    properties:
+      latitude:
+        type: number
+        format: double
+      longitude:
+        type: number
+        format: double
+      accuracy:
+        type: number
+        format: double
+      speed:
+        type: number
+        format: double
+      speed_accuracy:
+        type: integer
+        format: int32
+      heading:
+        type: number
+        format: double
+      heading_accuracy:
+        type: integer
+        format: int32
+      altitude:
+        type: number
+        format: double
+      altitude_accuracy:
+        type: integer
+        format: int32
+    required:
+      - latitude
+      - longitude
+      - accuracy
+      - speed
+      - speed_accuracy
+      - heading
+      - heading_accuracy
+      - altitude
+      - altitude_accuracy
+  Activity:
+    title: Activity
+    example:
+      type: walking
+      confidence: 100
+    type: object
+    properties:
+      type:
+        type: string
+      confidence:
+        type: integer
+        format: int32
+    required:
+      - type
+      - confidence
+  Battery:
+    title: Battery
+    example:
+      is_charging: false
+      level: 0.18
+    type: object
+    properties:
+      is_charging:
+        type: boolean
+      level:
+        type: number
+        format: double
+    required:
+      - is_charging
+      - level
+  UpdateRequest2:
+    title: UpdateRequest2
+    example:
+      Latitude: 28.0603562
+      Longitude: -80.6083946
+    type: object
+    properties:
+      Latitude:
+        type: number
+        format: double
+      Longitude:
+        type: number
+        format: double
+    required:
+      - Latitude
+      - Longitude
+  UpdatemetadataRequest:
+    title: UpdatemetadataRequest
+    example:
+      description: This mixed type contains the data
+    type: object
+    properties:
+      description:
+        type: string
+    required:
+      - description
+  AddmetadataRequest:
+    title: AddmetadataRequest
+    example:
+      _id: 617a7da7940c0c2fc44b71ed
+      type: Department
+      departmentFloor: First floor
+    type: object
+    properties:
+      _id:
+        type: string
+      type:
+        type: string
+      departmentFloor:
+        type: string
+    required:
+      - _id
+      - type
+      - departmentFloor
+  addrequest:
+    title: addrequest
+    example:
+      startTime: 18:04
+      endTime: 20:05
+      customer: 62383d0f8fcffd27cc1d787a
+      department: null
+      days:
+        - Wednesday
+      tasks:
+        - 62443f4651390b33441c15ed
+      driverId: 62432d429209170e5cb5d69a
+    type: object
+    properties:
+      startTime:
+        type: string
+      endTime:
+        type: string
+      customer:
+        type: string
+      department:
+        type: string
+      days:
+        type: array
+        items:
+          type: string
+      tasks:
+        type: array
+        items:
+          type: string
+      driverId:
+        type: string
+    required:
+      - startTime
+      - endTime
+      - customer
+      - department
+      - days
+      - tasks
+      - driverId
+  updaterequest3:
+    title: updaterequest3
+    example:
+      startTime: 18:04
+      endTime: 20:05
+      days:
+        - Monday
+        - Thursday
+      tasks:
+        - 6173031c23d13f4550409686
+      driverId: 616974bc578ee026c8bc3c2e
+    type: object
+    properties:
+      startTime:
+        type: string
+      endTime:
+        type: string
+      days:
+        type: array
+        items:
+          type: string
+      tasks:
+        type: array
+        items:
+          type: string
+      driverId:
+        type: string
+    required:
+      - startTime
+      - endTime
+      - days
+      - tasks
+      - driverId
+  deleterequest:
+    title: deleterequest
+    example:
+      startTime: 18:04
+      endTime: 20:05
+      days:
+        - Monday
+        - Tuesday
+      tasks:
+        - 614364806cb0ba3304021330
+        - 61468123e10df8292c96c6b4
+    type: object
+    properties:
+      startTime:
+        type: string
+      endTime:
+        type: string
+      days:
+        type: array
+        items:
+          type: string
+      tasks:
+        type: array
+        items:
+          type: string
+    required:
+      - startTime
+      - endTime
+      - days
+      - tasks
+  CreatebillingRequest:
+    title: CreatebillingRequest
+    type: object
+    properties:
+      table_name:
+        type: string
+      table_data:
+        type: array
+        items:
+          $ref: '#/definitions/TableDatum'
+      table_sum:
+        type: string
+    required:
+      - table_name
+      - table_data
+      - table_sum
+  TableDatum:
+    title: TableDatum
+    type: object
+    properties:
+      Date:
+        type: string
+      Start time:
+        type: string
+      Service:
+        type: string
+      Miles:
+        type: integer
+        format: int32
+      $Mile:
+        type: number
+        format: double
+      Total Miles: {}
+      Stops:
+        type: integer
+        format: int32
+      Base Price: {}
+      Total Stops:
+        type: number
+        format: double
+      Commision:
+        type: number
+        format: double
+      Amount:
+        type: number
+        format: double
+    required:
+      - Date
+      - Start time
+      - Service
+      - Miles
+      - $Mile
+      - Total Miles
+      - Stops
+      - Base Price
+      - Total Stops
+      - Commision
+      - Amount
+security: []
+tags:
+  - name: ott
+  - name: magic-link
+  - name: auth
+  - name: user
+  - name: customer
+  - name: job
+  - name: task
+  - name: past jobs
+  - name: driver
+  - name: department
+  - name: audit
+  - name: support-info
+  - name: upload
+  - name: queued-job
+  - name: calendar-event
+  - name: template
+  - name: charge-type
+  - name: schemas
+  - name: Geolocation
+  - name: metadata
+  - name: weekly-route
+  - name: billing

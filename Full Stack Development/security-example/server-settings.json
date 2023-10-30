@@ -1,0 +1,48 @@
+{
+  "database": {
+    "url": "localhost",
+    "user": "dbadmin",
+    "password": "dbpass",
+    "port": "27010",
+    "collection": "db"
+  },
+  "server": {
+    "ottExpirySchedule": "*/2 * * * *",
+    "weeklyRouteSchedule": "0 0 * * *",
+    "siteURL": "localhost",
+    "clientURL": "http://localhost:3000",
+    "name": "Backend API",
+    "signingKey": "BackendAPI",
+    "secret": "iambatman",
+    "GoogleCheckinDistance": 100,
+    "pingTime": 10,
+    "GoogleAPIKey": "YourGoogleApiKeyForUsingGoogleMapsServices",
+    "twilioAccountSid": "ACTwilioAccountSidThatYouGetAfterMakingYouTwilioAccount",
+    "twilioApiKey": "SKTwilioAccountApiKey",
+    "twilioApiSecret": "TwilioApiSecret",
+    "twilioNumber": "YourTwilioNumberMustStartWithPlusSign",
+    "twilioAuthToken": "TwilioAuthTokenPleaseReferToTwilioDocumentation",
+    "twilioVerifySid": "VATwilioVerifySidToAllowYouToUseTheTwilioOTPVerifyService",
+    "port": 3000,
+    "sessionDurationSeconds": 604800,
+    "signupWhiteList": [],
+    "ssh": {
+      "enabled": false,
+      "user": "root",
+      "password": ""
+    },
+    "recovery": {
+      "enabled": true,
+      "clientURL": "http://localhost",
+      "saltRounds": 5
+    }
+  },
+  "email": {
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "user": "username of smtp gmail account",
+    "pass": "password of smtp gmail account",
+    "from": "smtp gmail email"
+  },
+  "preferences": {}
+}
